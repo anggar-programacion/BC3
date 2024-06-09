@@ -1,3 +1,9 @@
+import os
+import tkinter as tk
+from tkinter import filedialog
+import tkinter.messagebox as messagebox
+
+
 def leer_registro_K(archivo):
     with open(archivo, 'rb') as f:
         for linea in f:
@@ -10,10 +16,18 @@ def leer_registro_K(archivo):
                 for etiqueta, campo in zip(etiquetas, campos):
                     print(f"{etiqueta}: {campo}")
 
-# Ejemplo de uso
-#archivo_bc3 = 'C:/Users/ANGEL/Desktop/FIEBDC/BC3/5VIVIENDAS.bc3'
-#archivo_bc3 = 'C:/Users/ANGEL/Desktop/FIEBDC/BC3/31-045R_FASE 1v2.bc3'
-#archivo_bc3 = 'C:/Users/ANGEL/Desktop/FIEBDC/BC3/JUNTA  ANDALUCIA 2023 JUL.bc3'
-archivo_bc3 = 'C:/Users/ANGEL/Desktop/FIEBDC/BC3/BDCG18C1S.bc3'
+
+def seleccionar_archivo_bc3():
+    """
+    Función para abrir un cuadro de diálogo y seleccionar un archivo *.bc3
+    """
+    ruta_archivo = filedialog.askopenfilename(
+        title="Seleccionar archivo BC3",
+        filetypes=[("Archivos BC3", "*.bc3")],
+    )
+    return ruta_archivo
+
+archivo_bc3  = seleccionar_archivo_bc3()
+
 leer_registro_K(archivo_bc3)
 
