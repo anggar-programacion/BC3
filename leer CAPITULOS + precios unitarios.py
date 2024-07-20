@@ -32,7 +32,7 @@ def extraer_capitulos_y_elementos(archivo):
                             if len(campos) >= 4:
                                 unidad = campos[2].strip()
                                 texto_reducido = campos[3].strip()
-                                capitulos_y_elementos.append((codigo_precio, unidad, texto_reducido, 'Elemento'))
+                                capitulos_y_elementos.append((codigo_precio, unidad, texto_reducido, 'Elemento'))  # Añadir 'Elemento' al final
     
     return capitulos_y_elementos
 
@@ -44,6 +44,10 @@ def seleccionar_archivo_bc3():
     return ruta_archivo
 
 archivo_bc3 = seleccionar_archivo_bc3()
+
+if not archivo_bc3:
+    print("No se seleccionó ningún archivo.")
+    exit()
 
 capitulos_y_elementos = extraer_capitulos_y_elementos(archivo_bc3)
 
@@ -57,4 +61,3 @@ print(tabulate(capitulos, headers=["Código de Capítulo", "Título del Capítul
 
 print("\nElementos:")
 print(tabulate(elementos, headers=["Código de Elemento", "Unidad", "Texto Reducido"], tablefmt="pretty", stralign="left"))
-

@@ -28,7 +28,7 @@ def extraer_lineas_capitulo(archivo):
                             # El título del capítulo está en el segundo campo, pero quitamos cualquier texto adicional después del primer '|'
                             titulo_codigo = campos[1].split('|')[0].strip()
                             lineas_capitulos.append((codigo_capitulo, titulo_codigo))
-    
+    #print (lineas_capitulos)
     return nombre_medicion, lineas_capitulos
 
 def seleccionar_archivo_bc3():

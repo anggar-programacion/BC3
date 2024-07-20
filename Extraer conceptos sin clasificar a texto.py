@@ -4,8 +4,12 @@ from tkinter import filedialog, simpledialog
 from tabulate import tabulate
 import textwrap
 
+
+# PARA OBTENER LOS PRECIOS UNITARIOS?
 def leer_registros_C(archivo):
     # Diccionario de equivalencias de tipo
+
+    #NO SE SI ESTO HACE FALTA O NO
     equivalencias_tipo = {
         "0": "Sin clasificar",
         "1": "Mano de obra",
@@ -15,7 +19,7 @@ def leer_registros_C(archivo):
         "5": "Clasificación de residuo"
     }
 
-    contador_materiales = 0
+    contador_sin_clasificar = 0
     datos = []
 
     with open(archivo, 'rb') as f:
@@ -33,8 +37,12 @@ def leer_registros_C(archivo):
                 tipo_codigo = campos[6].strip()
                 tipo = equivalencias_tipo.get(tipo_codigo, "Desconocido")
 
-                # Filtrar solo los registros cuyo TIPO es "3" (Materiales)
-                if tipo_codigo != "3":
+                # Filtrar solo los registros cuyo TIPO es "0" (Sin Clasificar)
+                if tipo_codigo != "0":
+                    continue
+
+                # Tratar los conceptos que terminan en "##" o "#" como capítulos
+                if codigo.endswith('##') or codigo.endswith('#'):
                     continue
 
                 # Dividir el resumen en líneas de 50 caracteres
@@ -42,23 +50,23 @@ def leer_registros_C(archivo):
 
                 # Añadir la fila de datos a la lista
                 datos.append([codigo, unidad, resumen_lines, precio, fecha])
-                contador_materiales += 1
+                contador_sin_clasificar += 1
 
     # Imprimir los datos en formato de tabla en la consola
     print(tabulate(datos, headers=["CODIGO", "UNIDAD", "RESUMEN", "PRECIO", "FECHA"], tablefmt="grid"))
 
     # Crear el directorio "Conceptos" en un subdirectorio con el nombre del archivo BC3
     nombre_archivo = os.path.splitext(os.path.basename(archivo))[0]
-    conceptos_dir = os.path.join(os.path.dirname(archivo), nombre_archivo, "Materiales")
+    conceptos_dir = os.path.join(os.path.dirname(archivo), nombre_archivo, "Sin Clasificar")
     if not os.path.exists(conceptos_dir):
         os.makedirs(conceptos_dir)
 
     # Escribir los datos en el archivo de texto con el mismo formato que en la consola
-    with open(os.path.join(conceptos_dir, f"{nombre_archivo}_MATERIALES.TXT"), 'w', encoding='utf-8') as file:
+    with open(os.path.join(conceptos_dir, f"{nombre_archivo}_SIN CLASIFICAR.TXT"), 'w', encoding='utf-8') as file:
         file.write(tabulate(datos, headers=["CODIGO", "UNIDAD", "RESUMEN", "PRECIO", "FECHA"], tablefmt="grid"))
 
     # Imprimir el total de registros de Mano de Obra
-    print(f"\nTotal de registros de Materieales: {contador_materiales}")
+    print(f"\nTotal de registros de Mano de Obra: {contador_sin_clasificar}")
 
 def seleccionar_archivo_bc3():
     root = tk.Tk()
